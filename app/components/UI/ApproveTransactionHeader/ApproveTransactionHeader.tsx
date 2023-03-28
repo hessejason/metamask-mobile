@@ -12,17 +12,12 @@ import { useStyles } from '../../../component-library/hooks';
 import { selectProviderConfig } from '../../../selectors/networkController';
 import { renderAccountName, renderShortAddress } from '../../../util/address';
 import { getHost, getUrlObj } from '../../../util/browser';
-import {
-  getNetworkImageSource,
-  getNetworkNameFromProvider,
-} from '../../../util/networks';
+import { getNetworkImageSource, getNetworkNameFromProvider } from '../../../util/networks';
 import { hexToBN, renderFromWei } from '../../../util/number';
 import { getTicker } from '../../../util/transactions';
 import { WALLET_CONNECT_ORIGIN } from '../../../util/walletconnect';
 import {
-  FAV_ICON_URL,
-  ORIGIN_DEEPLINK,
-  ORIGIN_QR_CODE,
+    FAV_ICON_URL, ORIGIN_DEEPLINK, ORIGIN_QR_CODE
 } from './ApproveTransactionHeader.constants';
 import stylesheet from './ApproveTransactionHeader.styles';
 import { ApproveTransactionHeaderI } from './ApproveTransactionHeader.types';
@@ -111,7 +106,7 @@ const ApproveTransactionHeader = ({
         origin.split(AppConstants.MM_SDK.SDK_REMOTE_ORIGIN)[1],
       ).origin;
     } else {
-      title = getUrlObj(currentEnsName || url || origin).origin;
+      title = getUrlObj(currentEnsName || origin || url).origin;
     }
 
     return title;
@@ -126,7 +121,7 @@ const ApproveTransactionHeader = ({
   ]);
 
   const favIconUrl = useMemo(() => {
-    let newUrl = url;
+    let newUrl = origin;
     if (isOriginWalletConnect) {
       newUrl = origin.split(WALLET_CONNECT_ORIGIN)[1];
     } else if (isOriginMMSDKRemoteConn) {
