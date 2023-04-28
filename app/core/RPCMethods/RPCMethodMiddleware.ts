@@ -36,7 +36,7 @@ export enum ApprovalTypes {
   ETH_SIGN = 'eth_sign',
   PERSONAL_SIGN = 'personal_sign',
   ETH_SIGN_TYPED_DATA = 'eth_signTypedData',
-  TRANSACTION = 'Transaction',
+  TRANSACTION = 'transaction',
 }
 
 interface RPCMethodsMiddleParameters {
