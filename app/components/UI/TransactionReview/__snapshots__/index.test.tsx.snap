@@ -826,6 +826,56 @@ Array [
                       ]
                     }
                   >
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  >
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "color": "#24272A",
+                            "fontFamily": "EuclidCircularB-Regular",
+                            "fontSize": 30,
+                            "fontWeight": "400",
+                            "marginVertical": 2,
+                          },
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          Object {
+                            "color": "#24272A",
+                            "fontFamily": "EuclidCircularB-Regular",
+                            "fontSize": 14,
+                            "fontWeight": "400",
+                          },
+                        ]
+                      }
+                    >
+                      0x1...0x1
+                    </Text>
                     <View
                       style={
                         Object {
