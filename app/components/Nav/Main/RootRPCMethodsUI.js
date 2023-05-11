@@ -395,19 +395,15 @@ const RootRPCMethodsUI = (props) => {
     setQrSigningState(undefined);
   };
 
-  const renderQRSigningModal = () => {
-    const { QRState } = props;
-    return (
-      showPendingApproval && (
-        <QRSigningModal
-          isVisible={showPendingApproval?.type === ApprovalTypes.QR_SIGNING}
-          QRState={QRState}
-          onSuccess={onQRSigningApproval}
-          onCancel={onQRSigningRejected}
-        />
-      )
+  const renderQRSigningModal = () =>
+    showPendingApproval && (
+      <QRSigningModal
+        isVisible={showPendingApproval?.type === ApprovalTypes.QR_SIGNING}
+        QRState={qrSigningState?.data}
+        onSuccess={onQRSigningApproval}
+        onCancel={onQRSigningRejected}
+      />
     );
-  };
 
   const onWalletConnectSessionApproval = () => {
     setShowPendingApproval(false);
@@ -734,7 +730,7 @@ const RootRPCMethodsUI = (props) => {
         try {
           await ApprovalController.add({
             id: random(),
-            origin: 'QR_signing',
+            origin: 'metamask',
             requestData: QRState,
             type: ApprovalTypes.QR_SIGNING,
           });
