@@ -1,0 +1,573 @@
+diff --git a/node_modules/@consensys/on-ramp-sdk/.DS_Store b/node_modules/@consensys/on-ramp-sdk/.DS_Store
+new file mode 100644
+index 0000000..5008ddf
+Binary files /dev/null and b/node_modules/@consensys/on-ramp-sdk/.DS_Store differ
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/API/api.d.ts b/node_modules/@consensys/on-ramp-sdk/dist/API/api.d.ts
+index 98a4412..f2be291 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/API/api.d.ts
++++ b/node_modules/@consensys/on-ramp-sdk/dist/API/api.d.ts
+@@ -13,12 +13,16 @@ export interface AmbiguousCryptoCurrency {
+     providers: Array<CryptoCurrencyProvider>;
+     cryptoCurrencies: Array<CryptoCurrency>;
+ }
++export interface ApplePayOption {
++    supported: boolean;
++    merchantId: string;
++}
+ export declare const Browser: {
+     readonly InAppOsBrowser: "IN_APP_OS_BROWSER";
+     readonly AppBrowser: "APP_BROWSER";
+     readonly ExternalOsBrowser: "EXTERNAL_OS_BROWSER";
+ };
+-export declare type Browser = typeof Browser[keyof typeof Browser];
++export declare type Browser = (typeof Browser)[keyof typeof Browser];
+ export interface BuyWidgetInformation {
+     url: string;
+     browser: BuyWidgetInformationBrowserEnum;
+@@ -29,7 +33,7 @@ export declare const BuyWidgetInformationBrowserEnum: {
+     readonly AppBrowser: "APP_BROWSER";
+     readonly ExternalOsBrowser: "EXTERNAL_OS_BROWSER";
+ };
+-export declare type BuyWidgetInformationBrowserEnum = typeof BuyWidgetInformationBrowserEnum[keyof typeof BuyWidgetInformationBrowserEnum];
++export declare type BuyWidgetInformationBrowserEnum = (typeof BuyWidgetInformationBrowserEnum)[keyof typeof BuyWidgetInformationBrowserEnum];
+ export interface Country {
+     id: string;
+     name: string;
+@@ -230,12 +234,12 @@ export declare const OrderStatusEnum: {
+     readonly Cancelled: "CANCELLED";
+     readonly IdExpired: "ID_EXPIRED";
+ };
+-export declare type OrderStatusEnum = typeof OrderStatusEnum[keyof typeof OrderStatusEnum];
++export declare type OrderStatusEnum = (typeof OrderStatusEnum)[keyof typeof OrderStatusEnum];
+ export declare const OrderOrderTypeEnum: {
+     readonly Buy: "BUY";
+     readonly Transfer: "TRANSFER";
+ };
+-export declare type OrderOrderTypeEnum = typeof OrderOrderTypeEnum[keyof typeof OrderOrderTypeEnum];
++export declare type OrderOrderTypeEnum = (typeof OrderOrderTypeEnum)[keyof typeof OrderOrderTypeEnum];
+ export interface OrderId {
+     id: string;
+ }
+@@ -332,7 +336,7 @@ export declare const PaymentIconType: {
+     readonly Zocial: "zocial";
+     readonly SimpleLineIcons: "simpleLineIcons";
+ };
+-export declare type PaymentIconType = typeof PaymentIconType[keyof typeof PaymentIconType];
++export declare type PaymentIconType = (typeof PaymentIconType)[keyof typeof PaymentIconType];
+ export interface PaymentLimits {
+     maxAmount: number;
+     minAmount: number;
+@@ -363,7 +367,7 @@ export declare const PaymentType: {
+     readonly GooglePay: "google-pay";
+     readonly Wallet: "wallet";
+ };
+-export declare type PaymentType = typeof PaymentType[keyof typeof PaymentType];
++export declare type PaymentType = (typeof PaymentType)[keyof typeof PaymentType];
+ export interface Provider {
+     id: string;
+     logos: Logos;
+@@ -378,7 +382,7 @@ export declare const ProviderEnvironmentTypeEnum: {
+     readonly Staging: "STAGING";
+     readonly Production: "PRODUCTION";
+ };
+-export declare type ProviderEnvironmentTypeEnum = typeof ProviderEnvironmentTypeEnum[keyof typeof ProviderEnvironmentTypeEnum];
++export declare type ProviderEnvironmentTypeEnum = (typeof ProviderEnvironmentTypeEnum)[keyof typeof ProviderEnvironmentTypeEnum];
+ export interface ProviderBuyFeature {
+     enabled: boolean;
+     userAgent: string;
+@@ -398,18 +402,18 @@ export declare const ProviderBuyFeatureOrderCustomIdEnum: {
+     readonly Guid: "GUID";
+     readonly Alpha64: "ALPHA_64";
+ };
+-export declare type ProviderBuyFeatureOrderCustomIdEnum = typeof ProviderBuyFeatureOrderCustomIdEnum[keyof typeof ProviderBuyFeatureOrderCustomIdEnum];
++export declare type ProviderBuyFeatureOrderCustomIdEnum = (typeof ProviderBuyFeatureOrderCustomIdEnum)[keyof typeof ProviderBuyFeatureOrderCustomIdEnum];
+ export declare const ProviderBuyFeatureBrowserEnum: {
+     readonly InAppOsBrowser: "IN_APP_OS_BROWSER";
+     readonly AppBrowser: "APP_BROWSER";
+     readonly ExternalOsBrowser: "EXTERNAL_OS_BROWSER";
+ };
+-export declare type ProviderBuyFeatureBrowserEnum = typeof ProviderBuyFeatureBrowserEnum[keyof typeof ProviderBuyFeatureBrowserEnum];
++export declare type ProviderBuyFeatureBrowserEnum = (typeof ProviderBuyFeatureBrowserEnum)[keyof typeof ProviderBuyFeatureBrowserEnum];
+ export declare const ProviderBuyFeatureRedirectionEnum: {
+     readonly HttpRedirection: "HTTP_REDIRECTION";
+     readonly JsonRedirection: "JSON_REDIRECTION";
+ };
+-export declare type ProviderBuyFeatureRedirectionEnum = typeof ProviderBuyFeatureRedirectionEnum[keyof typeof ProviderBuyFeatureRedirectionEnum];
++export declare type ProviderBuyFeatureRedirectionEnum = (typeof ProviderBuyFeatureRedirectionEnum)[keyof typeof ProviderBuyFeatureRedirectionEnum];
+ export interface ProviderFeatures {
+     buy: ProviderBuyFeature;
+     quotes: ProviderQuoteFeature;
+@@ -499,6 +503,32 @@ export interface ProviderSupportedFiatCurrency {
+ export interface ProviderSupportedFiatCurrencySell {
+     enabled: boolean;
+ }
++export interface PurchaseOrder {
++    id: string;
++    customId: string;
++    userId: string;
++    link: string;
++    crypto: object;
++    fiatAmountIn: number;
++    fiatAmountInUsd: number;
++    cryptoAmount: number;
++    fiat: string;
++    payment: string;
++    providerPayment: string;
++    exchangeRate: string;
++    processingFees: Array<string>;
++    networkFees: Array<string>;
++    partnerFees: Array<string>;
++    createdAt: string;
++    updatedAt: string;
++    transactionHash: string;
++    walletAddress: string;
++    status: string;
++    statusCode: string;
++    statusReason: string;
++    partnerAccountId: string;
++    orderType: string;
++}
+ export interface PurchasesResponse {
+     purchases?: Array<PartnerPurchase>;
+     links: PurchasesResponseLinks;
+@@ -530,6 +560,7 @@ export interface QuoteOrQuery {
+     method: string;
+     headers: object;
+     quote: Quote;
++    nativeApplePay: ApplePayOption;
+ }
+ export interface RegionCache {
+     parameters: RegionCacheParameters;
+@@ -707,6 +738,7 @@ export declare const OrderManagementApiAxiosParamCreator: (configuration?: Confi
+     ordersControllerGetSellOrder: (providerCode: string, orderCode: string, wallet: string, context?: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+     ordersControllerGetSellOrderIdFromCallback: (providerCode: string, url: string, context?: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+     ordersControllerGetSellUrl: (providerCode: string, regionId: string, paymentMethodId: string, cryptoCurrencyId: string, fiatCurrencyId: string, amount: number, walletAddress: string, orderId: string, redirectUrl: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
++    ordersControllerSubmitApplePayOrder: (providerCode: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+ };
+ export declare const OrderManagementApiFp: (configuration?: Configuration) => {
+     ordersControllerGetAllProviders(environment?: string, context?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>>;
+@@ -717,6 +749,7 @@ export declare const OrderManagementApiFp: (configuration?: Configuration) => {
+     ordersControllerGetSellOrder(providerCode: string, orderCode: string, wallet: string, context?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Order>>;
+     ordersControllerGetSellOrderIdFromCallback(providerCode: string, url: string, context?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderId>>;
+     ordersControllerGetSellUrl(providerCode: string, regionId: string, paymentMethodId: string, cryptoCurrencyId: string, fiatCurrencyId: string, amount: number, walletAddress: string, orderId: string, redirectUrl: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BuyWidgetInformation>>;
++    ordersControllerSubmitApplePayOrder(providerCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PurchaseOrder>>;
+ };
+ export declare const OrderManagementApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
+     ordersControllerGetAllProviders(environment?: string, context?: string, options?: any): AxiosPromise<object>;
+@@ -727,6 +760,7 @@ export declare const OrderManagementApiFactory: (configuration?: Configuration,
+     ordersControllerGetSellOrder(providerCode: string, orderCode: string, wallet: string, context?: string, options?: any): AxiosPromise<Order>;
+     ordersControllerGetSellOrderIdFromCallback(providerCode: string, url: string, context?: string, options?: any): AxiosPromise<OrderId>;
+     ordersControllerGetSellUrl(providerCode: string, regionId: string, paymentMethodId: string, cryptoCurrencyId: string, fiatCurrencyId: string, amount: number, walletAddress: string, orderId: string, redirectUrl: string, options?: any): AxiosPromise<BuyWidgetInformation>;
++    ordersControllerSubmitApplePayOrder(providerCode: string, options?: any): AxiosPromise<PurchaseOrder>;
+ };
+ export declare class OrderManagementApi extends BaseAPI {
+     ordersControllerGetAllProviders(environment?: string, context?: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<object>>;
+@@ -737,6 +771,7 @@ export declare class OrderManagementApi extends BaseAPI {
+     ordersControllerGetSellOrder(providerCode: string, orderCode: string, wallet: string, context?: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<Order>>;
+     ordersControllerGetSellOrderIdFromCallback(providerCode: string, url: string, context?: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<OrderId>>;
+     ordersControllerGetSellUrl(providerCode: string, regionId: string, paymentMethodId: string, cryptoCurrencyId: string, fiatCurrencyId: string, amount: number, walletAddress: string, orderId: string, redirectUrl: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<BuyWidgetInformation>>;
++    ordersControllerSubmitApplePayOrder(providerCode: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<PurchaseOrder>>;
+ }
+ export declare const RegionsApiAxiosParamCreator: (configuration?: Configuration) => {
+     regionsControllerFakeCallback: (fakeRedirectCallback?: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/API/api.js b/node_modules/@consensys/on-ramp-sdk/dist/API/api.js
+index 6848d79..b17490f 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/API/api.js
++++ b/node_modules/@consensys/on-ramp-sdk/dist/API/api.js
+@@ -872,6 +872,25 @@ const OrderManagementApiAxiosParamCreator = function (configuration) {
+                 options: localVarRequestOptions,
+             };
+         },
++        ordersControllerSubmitApplePayOrder: async (providerCode, options = {}) => {
++            (0, common_1.assertParamExists)('ordersControllerSubmitApplePayOrder', 'providerCode', providerCode);
++            const localVarPath = `/providers/{providerCode}/order/apple-pay`.replace(`{${'providerCode'}}`, encodeURIComponent(String(providerCode)));
++            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
++            let baseOptions;
++            if (configuration) {
++                baseOptions = configuration.baseOptions;
++            }
++            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
++            const localVarHeaderParameter = {};
++            const localVarQueryParameter = {};
++            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
++            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
++            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
++            return {
++                url: (0, common_1.toPathString)(localVarUrlObj),
++                options: localVarRequestOptions,
++            };
++        },
+     };
+ };
+ exports.OrderManagementApiAxiosParamCreator = OrderManagementApiAxiosParamCreator;
+@@ -910,6 +929,10 @@ const OrderManagementApiFp = function (configuration) {
+             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerGetSellUrl(providerCode, regionId, paymentMethodId, cryptoCurrencyId, fiatCurrencyId, amount, walletAddress, orderId, redirectUrl, options);
+             return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+         },
++        async ordersControllerSubmitApplePayOrder(providerCode, options) {
++            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerSubmitApplePayOrder(providerCode, options);
++            return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
++        },
+     };
+ };
+ exports.OrderManagementApiFp = OrderManagementApiFp;
+@@ -956,6 +979,11 @@ const OrderManagementApiFactory = function (configuration, basePath, axios) {
+                 .ordersControllerGetSellUrl(providerCode, regionId, paymentMethodId, cryptoCurrencyId, fiatCurrencyId, amount, walletAddress, orderId, redirectUrl, options)
+                 .then((request) => request(axios, basePath));
+         },
++        ordersControllerSubmitApplePayOrder(providerCode, options) {
++            return localVarFp
++                .ordersControllerSubmitApplePayOrder(providerCode, options)
++                .then((request) => request(axios, basePath));
++        },
+     };
+ };
+ exports.OrderManagementApiFactory = OrderManagementApiFactory;
+@@ -1000,6 +1028,11 @@ class OrderManagementApi extends base_1.BaseAPI {
+             .ordersControllerGetSellUrl(providerCode, regionId, paymentMethodId, cryptoCurrencyId, fiatCurrencyId, amount, walletAddress, orderId, redirectUrl, options)
+             .then((request) => request(this.axios, this.basePath));
+     }
++    ordersControllerSubmitApplePayOrder(providerCode, options) {
++        return (0, exports.OrderManagementApiFp)(this.configuration)
++            .ordersControllerSubmitApplePayOrder(providerCode, options)
++            .then((request) => request(this.axios, this.basePath));
++    }
+ }
+ exports.OrderManagementApi = OrderManagementApi;
+ const RegionsApiAxiosParamCreator = function (configuration) {
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/IOnRampSdk.d.ts b/node_modules/@consensys/on-ramp-sdk/dist/IOnRampSdk.d.ts
+index 3f934f5..3144d9d 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/IOnRampSdk.d.ts
++++ b/node_modules/@consensys/on-ramp-sdk/dist/IOnRampSdk.d.ts
+@@ -52,6 +52,8 @@ export interface QuoteResponse {
+     error?: boolean;
+     paymentMethod?: any;
+     receiver?: string;
++    isNativeApplePay?: boolean;
++    marketPrice?: number;
+     buy: () => Promise<BuyAction>;
+     getApplePayRequestInfo?(setup: IApplePaySetup): ApplePayPaymentInfo;
+     purchaseWithApplePay?(paymentDetails: PaymentDetailsIOS): Promise<ApplePayPurchaseResult>;
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.d.ts b/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.d.ts
+index 44b15b2..be672ad 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.d.ts
++++ b/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.d.ts
+@@ -1,6 +1,7 @@
+ import { Order } from './API';
+ import { Logger } from './Logger';
+ import OnRampSdkParameters from './OnRampSdkParameters';
++import { ApplePayPurchaseResult } from './ApplePay';
+ export default class OrdersService {
+     private readonly axios;
+     private readonly logger;
+@@ -11,4 +12,5 @@ export default class OrdersService {
+     getSellOrderFromCallback(providerId: string, redirectUrl: string, walletAddress: string): Promise<Order>;
+     getOrder(orderId: string, walletAddress: string): Promise<Order>;
+     getSellOrder(orderId: string, walletAddress: string): Promise<Order>;
++    submitApplePayOrder(dest: string, providerId: string, payload: any): Promise<ApplePayPurchaseResult>;
+ }
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.js b/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.js
+index fe00a18..8884a91 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.js
++++ b/node_modules/@consensys/on-ramp-sdk/dist/OrdersService.js
+@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const SdkParam_1 = __importDefault(require("./SdkParam"));
+ const Utils_1 = __importDefault(require("./Utils"));
++const ApplePay_1 = require("./ApplePay");
+ class OrdersService {
+     constructor(axios, logger, sdkParameters) {
+         this.axios = axios;
+@@ -69,6 +70,40 @@ class OrdersService {
+             throw new Error(`An unexpected error occurred while retrieving order information.`);
+         }
+     }
++    async submitApplePayOrder(dest, providerId, payload) {
++        const response = await Utils_1.default.try(async () => await this.axios.post(`${providerId}/order/apple-pay`, payload, {
++            validateStatus: () => true,
++            headers: {
++                Accept: 'application/json',
++                'Content-Type': 'application/json',
++            },
++            timeout: 25000,
++        }));
++        console.log(`Got response from ${providerId}/order/apple-pay`);
++        if (response.status >= 200 && response.status < 300) {
++            const orderId = response.data.id;
++            const order = await this.getOrder(orderId, dest);
++            if (response.data.authenticationUrl) {
++                return {
++                    status: ApplePay_1.ApplePayPurchaseStatus.PENDING,
++                    authenticationUrl: response.data.authenticationUrl,
++                    order: order,
++                };
++            }
++            else {
++                return {
++                    status: ApplePay_1.ApplePayPurchaseStatus.SUCCESS,
++                    order: order,
++                };
++            }
++        }
++        else {
++            return {
++                status: ApplePay_1.ApplePayPurchaseStatus.FAILURE,
++                error: response.data,
++            };
++        }
++    }
+ }
+ __decorate([
+     __param(0, (0, SdkParam_1.default)({ required: true })),
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.d.ts b/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.d.ts
+index 0b932d6..b4e9e44 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.d.ts
++++ b/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.d.ts
+@@ -12,9 +12,12 @@ export declare class GenericProviderSDK implements IProvider {
+     getId(): string;
+     getLimit(provider: RegionProvider, fiat: string, crypto: string, paymentMethod: string): Promise<Limits>;
+     getSellLimit(provider: RegionProvider, fiat: string, crypto: string, paymentMethod: string): Promise<Limits>;
++    private addApplePayToQuote;
+     getQuote(provider: RegionProvider, quoteUri: string, regionId: string, paymentMethod: string, crypto: string, fiat: string, amount: number, receiver: string): Promise<QuoteResponse | QuoteError>;
+     private getRemoteQuote;
+     getSellQuote(provider: RegionProvider, quoteUri: string, regionId: string, paymentMethod: string, crypto: string, fiat: string, amount: number, receiver: string): Promise<SellQuoteResponse | QuoteError>;
++    private getCountryCode;
+     parseError(body: any): QuoteError;
+     private translateFiat;
++    private translateCrypto;
+ }
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.js b/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.js
+index aacd068..70b579b 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.js
++++ b/node_modules/@consensys/on-ramp-sdk/dist/providers/Generic/GenericProviderSDK.js
+@@ -65,6 +65,112 @@ class GenericProviderSDK {
+     getSellLimit(provider, fiat, crypto, paymentMethod) {
+         return null;
+     }
++    async addApplePayToQuote(provider, regionId, quote, merchantId) {
++        const regionService = await this.onRampSdk.regions();
++        const methodData = [
++            {
++                supportedMethods: ['apple-pay'],
++                data: {
++                    countryCode: this.getCountryCode(regionId),
++                    currencyCode: this.translateFiat(provider, quote.fiatId),
++                    supportedNetworks: ['visa', 'mastercard', 'discover'],
++                    merchantIdentifier: merchantId,
++                },
++            },
++        ];
++        const translatedFiat = this.translateFiat(provider, quote.fiatId);
++        const fiat = await regionService.getFiatCurrency(regionId, quote.fiatId);
++        const paymentDetails = (setup) => {
++            return {
++                displayItems: [
++                    {
++                        amount: {
++                            currency: translatedFiat,
++                            value: `${(quote.amountIn -
++                                quote.providerFee -
++                                quote.networkFee).toFixed(fiat.decimals)}`,
++                        },
++                        label: setup.getPurchaseFiatAmountWithoutFeeLabel(quote.crypto),
++                    },
++                    {
++                        amount: {
++                            currency: translatedFiat,
++                            value: `${(quote.networkFee + quote.providerFee).toFixed(fiat.decimals)}`,
++                        },
++                        label: setup.getPurchaseFiatFeeLabel(),
++                    },
++                ],
++                total: {
++                    amount: {
++                        translatedFiat,
++                        value: `${quote.amountIn.toFixed(fiat.decimals)}`,
++                    },
++                    label: setup.getPurchaseFiatTotalAmountLabel(),
++                },
++            };
++        };
++        const paymentOptions = {
++            requestPayerPhone: false,
++            requestPayerEmail: false,
++            requestBilling: true,
++            merchantCapabilities: ['debit', 'credit'],
++        };
++        quote.getApplePayRequestInfo = (setup) => {
++            return {
++                methodData: methodData,
++                paymentDetails: paymentDetails(setup),
++                paymentOptions: paymentOptions,
++            };
++        };
++        quote.purchaseWithApplePay = async (paymentDetails) => {
++            var _a;
++            const { billingContact: { postalAddress, name }, paymentData, paymentMethod, shippingContact, transactionIdentifier, } = paymentDetails;
++            const formattedBillingContact = {
++                addressLines: postalAddress.street.split('\n'),
++                administrativeArea: postalAddress.state,
++                country: postalAddress.country,
++                countryCode: postalAddress.ISOCountryCode,
++                familyName: name.familyName,
++                givenName: name.givenName,
++                locality: postalAddress.city,
++                postalCode: postalAddress.postalCode,
++                subAdministrativeArea: postalAddress.subAdministrativeArea,
++                subLocality: postalAddress.subLocality,
++            };
++            const formattedShippingContact = Object.assign(Object.assign(Object.assign({}, formattedBillingContact), (paymentOptions.requestPayerEmail
++                ? { emailAddress: shippingContact.emailAddress }
++                : {})), (paymentOptions.requestPayerPhone
++                ? { phoneNumber: shippingContact.phoneNumber }
++                : {}));
++            const partnerId = provider.data['accountId'];
++            const payload = {
++                paymentObject: {
++                    billingContact: formattedBillingContact,
++                    shippingContact: formattedShippingContact,
++                    token: {
++                        paymentData,
++                        paymentMethod,
++                        transactionIdentifier,
++                    },
++                },
++                order: {
++                    region: regionId,
++                    country: this.getCountryCode(regionId),
++                    crypto: this.translateCrypto(provider, quote.cryptoId),
++                    fiat: this.translateFiat(provider, quote.fiatId),
++                    payment: 'apple-pay',
++                    amount: `${quote.amountIn}`,
++                    walletAddress: quote.receiver,
++                    orderCustomId: null,
++                    partnerAccountId: partnerId,
++                    redirectUrl: this.onRampSdk.sdkParameters.environment.orders,
++                },
++            };
++            const ordersService = await this.onRampSdk.orders();
++            const applePayResult = await ordersService.submitApplePayOrder(quote.receiver, (_a = provider === null || provider === void 0 ? void 0 : provider.provider) === null || _a === void 0 ? void 0 : _a.id, payload);
++            return applePayResult;
++        };
++    }
+     async getQuote(provider, quoteUri, regionId, paymentMethod, crypto, fiat, amount, receiver) {
+         const quoteOrQuery = await this.getRemoteQuote(provider, regionId, paymentMethod, crypto, fiat, amount, receiver);
+         if (quoteOrQuery['error']) {
+@@ -81,6 +187,7 @@ class GenericProviderSDK {
+             };
+         }
+         const quote = quoteOrQuery['quote'];
++        const nativeApplePay = quoteOrQuery['nativeApplePay'];
+         const regions = await this.onRampSdk.regions();
+         const quoteFormatted = {
+             provider: provider.provider,
+@@ -100,7 +207,11 @@ class GenericProviderSDK {
+             },
+             paymentMethod: quote.paymentMethod,
+             receiver: quote.receiver,
++            isNativeApplePay: nativeApplePay && (nativeApplePay === null || nativeApplePay === void 0 ? void 0 : nativeApplePay.supported),
+         };
++        if (nativeApplePay) {
++            await this.addApplePayToQuote(provider, regionId, quoteFormatted, nativeApplePay.merchantId);
++        }
+         return quoteFormatted;
+     }
+     async getRemoteQuote(provider, regionId, paymentMethod, crypto, fiat, amount, receiver) {
+@@ -134,6 +245,12 @@ class GenericProviderSDK {
+     getSellQuote(provider, quoteUri, regionId, paymentMethod, crypto, fiat, amount, receiver) {
+         throw new Error(`Not implemented`);
+     }
++    getCountryCode(regionId) {
++        const parts = regionId.split('/');
++        const regionCode = parts[parts.length - 1];
++        const countryCode = regionCode.split('-')[0];
++        return countryCode.toUpperCase();
++    }
+     parseError(body) {
+         return {
+             provider: undefined,
+@@ -146,5 +263,8 @@ class GenericProviderSDK {
+     translateFiat(provider, currencyId) {
+         return provider.supportedFiatCurrencies.filter((f) => f.id === currencyId)[0].translation;
+     }
++    translateCrypto(provider, currencyId) {
++        return provider.supportedCryptoCurrencies.filter((c) => c.id === currencyId)[0].translation;
++    }
+ }
+ exports.GenericProviderSDK = GenericProviderSDK;
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/providers/Wyre/WyreSDK.js b/node_modules/@consensys/on-ramp-sdk/dist/providers/Wyre/WyreSDK.js
+index 03cb7aa..c651d9b 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/providers/Wyre/WyreSDK.js
++++ b/node_modules/@consensys/on-ramp-sdk/dist/providers/Wyre/WyreSDK.js
+@@ -49,6 +49,7 @@ class WyreSDK {
+         return null;
+     }
+     async getQuote(provider, quoteUri, regionId, paymentMethodId, crypto, fiat, amount, receiver) {
++        var _a;
+         let query;
+         const decentralizedAuthentication = !provider.data['remoteAuthentication'];
+         if (decentralizedAuthentication) {
+@@ -116,6 +117,7 @@ class WyreSDK {
+         quoteFormatted.receiver = receiver;
+         quoteFormatted.provider = provider.provider;
+         this.addApplePayToQuote(provider, regionId, quoteFormatted);
++        quoteFormatted.isNativeApplePay = (_a = quoteFormatted === null || quoteFormatted === void 0 ? void 0 : quoteFormatted.paymentMethod) === null || _a === void 0 ? void 0 : _a.isApplePay;
+         return quoteFormatted;
+     }
+     getSellQuote(provider, quoteUri, regionId, paymentMethod, crypto, fiat, amount, receiver) {
+@@ -174,6 +176,10 @@ class WyreSDK {
+                 Authorization: 'Bearer ' + this.wyreApi.SECRET,
+             },
+             quote: null,
++            nativeApplePay: {
++                supported: false,
++                merchantId: undefined,
++            },
+         };
+         return query;
+     }
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.d.ts b/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.d.ts
+index 9479fc0..a0622d1 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.d.ts
++++ b/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.d.ts
+@@ -44,6 +44,7 @@ export default class RegionsService {
+     private getSellRegionProviders;
+     getProvider(regionId: string, id: string): Promise<RegionProvider>;
+     getQuotes(regionId: string, paymentMethod: string, crypto: string, fiat: string, amount: number, receiver: string): Promise<(QuoteResponse | QuoteError)[]>;
++    private getExchangeRateFromAPI;
+     getSellQuotes(regionId: string, paymentMethod: string, crypto: string, fiat: string, amount: number, receiver: string): Promise<(SellQuoteResponse | QuoteError)[]>;
+     private getQuote;
+     private getSellQuote;
+diff --git a/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.js b/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.js
+index 6d047e5..0db134e 100644
+--- a/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.js
++++ b/node_modules/@consensys/on-ramp-sdk/dist/regions/RegionsService.js
+@@ -405,7 +405,27 @@ class RegionsService {
+                 return 0;
+             }
+         });
+-        return quotes;
++        const exchangeRate = await this.getExchangeRateFromAPI(fiat, crypto);
++        const marketPrice = exchangeRate * amount;
++        return quotes.map((quoteObj) => {
++            if (quoteObj === null || quoteObj === void 0 ? void 0 : quoteObj.error) {
++                return quoteObj;
++            }
++            const quoteResponse = quoteObj;
++            quoteResponse.marketPrice = marketPrice;
++            return quoteResponse;
++        });
++    }
++    async getExchangeRateFromAPI(fiat, crypto) {
++        var _a;
++        const baseUrl = this.sdkParameters.environment.orders.endsWith('/')
++            ? this.sdkParameters.environment.orders.substring(0, this.sdkParameters.environment.orders.length - 1)
++            : this.sdkParameters.environment.orders;
++        const url = new URL(`${baseUrl}${crypto}/amount`);
++        url.searchParams.set('value', '1');
++        url.searchParams.set('fiat', fiat);
++        const response = (await this.axios.get(url.toString()));
++        return (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.value;
+     }
+     async getSellQuotes(regionId, paymentMethod, crypto, fiat, amount, receiver) {
+         Utils_1.default.checkParameters({
