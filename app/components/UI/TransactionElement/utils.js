@@ -606,7 +606,7 @@ function decodeConfirmTx(args) {
   if (actionKey === strings('transactions.approve'))
     transactionType = TRANSACTION_TYPES.APPROVE;
   else if (actionKey === strings('transactions.swaps_transaction'))
-    transactionType = TRANSACTION_TYPES.SITE_INTERACTION;
+    transactionType = TRANSACTION_TYPES.SWAPS_TRANSACTION;
   else if (
     actionKey === strings('transactions.smart_contract_interaction') ||
     (!actionKey.includes(strings('transactions.sent')) &&
